@@ -1,226 +1,527 @@
-# Quorum Backend
+# Quorum - Enterprise Asset Management System
 
-A comprehensive Django REST API for enterprise asset management system with role-based access control, AI-powered insights, and real-time notifications.
+An intelligent, enterprise-grade asset management platform designed to help organizations efficiently track, assign, maintain, and manage their valuable IT assets and equipment. From tracking expensive servers and laptops to managing asset depreciation and maintenance workflows, Quorum provides a comprehensive solution with real-time notifications, AI-powered assistance, and detailed audit trails.
 
-## 🚀 Features
+![Django](https://img.shields.io/badge/Django-6.0.4-092E20?style=flat-square&logo=django)
+![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791?style=flat-square&logo=postgresql)
+![Angular](https://img.shields.io/badge/Angular-20.3.25-DD0031?style=flat-square&logo=angular)
+![Ionic](https://img.shields.io/badge/Ionic-8.0.0-3880FF?style=flat-square&logo=ionic)
+![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
 
-### Core Asset Management
-- **Asset Inventory**: Track assets by category, location, and status with detailed metadata
-- **Asset Units**: Manage individual asset units with serial numbers and barcodes
-- **Asset Assignment**: Assign assets to users/departments with tracking and history
-- **Asset Depreciation**: Calculate asset value over time with multiple depreciation methods
-- **Asset Requests**: Employees can request assets with manager approval workflow
+## Table of Contents
 
-### Financial Management
-- **Purchase Tracking**: Record purchases with supplier details and payment tracking
-- **Payment Management**: Handle multiple payment methods (bank transfer, cheque, mobile wallet)
-- **Invoice Generation**: Automated invoice creation and PDF export
-- **Supplier Management**: Maintain supplier database with contact and payment information
+- [Features](#features)
+- [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Configuration](#configuration)
+  - [Running the Backend](#running-the-backend)
+- [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
+- [Core Modules](#core-modules)
+- [Authentication & Authorization](#authentication--authorization)
+- [Environment Variables](#environment-variables)
+- [Deployment](#deployment)
+- [Security](#security)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
 
-### Maintenance & Operations
-- **Maintenance Requests**: Create, track, and manage asset maintenance tickets
-- **Technician Assignment**: Assign maintenance tasks to technicians with status updates
-- **Maintenance History**: Complete audit trail of all maintenance activities
-- **Work Updates**: Technicians can provide real-time status updates on repairs
+## Features
 
-### AI & Automation
-- **AI Assistant**: Groq and OpenRouter powered AI for smart asset insights
-- **AI-Generated Descriptions**: Automated maintenance issue descriptions
-- **Natural Language Processing**: Convert voice/text to actionable maintenance requests
+### 🏢 Asset Management
+- **Comprehensive Asset Tracking**: Track IT assets including laptops, servers, desktops, and other equipment
+- **SKU & Serial Number Management**: Unique identifiers for every asset unit for complete traceability
+- **Asset Categories**: Organize assets into logical categories with auto-icon detection
+- **Warranty Tracking**: Monitor warranty periods with expiration alerts
+- **Financial Tracking**: Track purchase costs, current value, and depreciation
+- **Multi-unit Assets**: Support for multiple units of the same asset model
 
-### Notifications & Compliance
-- **Push Notifications**: Firebase Cloud Messaging for real-time alerts
-- **Notification Preferences**: User-configurable notification settings
-- **Audit Logging**: Complete audit trail of all system activities
-- **Role-Based Access Control**: Fine-grained permissions system (Admin, Manager, Technician, User)
+### 👥 Asset Assignment & Employee Management
+- **Employee Asset Assignment**: Assign assets to employees with expected return dates
+- **Assignment History**: Complete audit trail of all asset movements
+- **Return Management**: Track asset condition on return with receipt confirmation
+- **Department Tracking**: Organize employees and assets by department
+- **Role-Based Access**: Four built-in roles with customizable permissions
 
-### User Management
-- **User Accounts**: Create and manage user accounts with roles
-- **Department Management**: Organize users by departments
-- **Employee Profiles**: Track employee information and assignments
-- **Permission Management**: Granular control over user capabilities
+### 🔧 Maintenance Management
+- **Maintenance Request Lifecycle**: From request to completion with verified status
+- **Multiple Maintenance Types**: Preventive, Corrective, Emergency, Inspection, Upgrade
+- **Priority Management**: Low, Medium, High, and Critical priority levels
+- **Technician Assignment**: Assign maintenance requests to external technicians
+- **Timeline Tracking**: Complete history of all status changes and work done
+- **Notes & Documentation**: Detailed notes from technicians and requesters
 
-## 📋 Requirements
+### 💰 Financial & Depreciation
+- **Automatic Depreciation Calculation**: Straight-line and other depreciation methods
+- **Salvage Value Tracking**: Define and track asset salvage value
+- **Useful Life Management**: Configure asset useful life in years
+- **Current Value Updates**: Real-time asset valuation for financial reporting
+- **Financial Reporting**: Generate depreciation and asset value reports
 
-- Python 3.10+
-- PostgreSQL 12+
-- Django 6.0.4
-- Django REST Framework 3.17.1
+### 📊 Reporting & Analytics
+- **Dashboard Overview**: Key metrics and summaries at a glance
+- **Date Range Filtering**: Analyze data across custom date ranges
+- **Real-time Statistics**: Up-to-date asset and maintenance metrics
+- **Permission-Based Visibility**: Users see only data relevant to their role
+- **Export Capabilities**: Generate reports for financial and operational analysis
 
-## 🛠️ Installation
+### 🔔 Real-time Notifications
+- **Multi-Type Notifications**: Maintenance, Asset, Assignment, Warranty, and System alerts
+- **Firebase Push Notifications**: Optional push notifications to mobile devices (FCM)
+- **In-App Notifications**: Database-backed notification history
+- **User Preferences**: Granular notification preference controls
+- **Device Token Management**: Automatic FCM device token tracking
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/umairlabs/quorum-backend.git
-cd quorum-backend
+### 🤖 AI Assistance
+- **Intelligent Issue Generation**: AI-powered maintenance issue descriptions
+- **Natural Language Processing**: Assist with asset creation and categorization
+- **Conversational AI Assistant**: Context-aware assistant with database knowledge
+- **Action Suggestions**: AI-suggested actions for asset and maintenance management
+- **LLM Integration**: Powered by Groq and OpenRouter APIs
+
+### 📋 Audit & Compliance
+- **Complete Audit Trails**: Every action logged with user and timestamp
+- **Change History**: Track all modifications to critical data
+- **Action Logging**: Create, Edit, Delete, Assign, Transfer, Return, Retire actions
+- **Compliance Ready**: Generate audit reports for compliance verification
+- **Data Snapshots**: Snapshot fields for historical accuracy (asset names, serial numbers)
+
+### 🔐 Security & Access Control
+- **JWT Authentication**: Stateless token-based authentication
+- **Role-Based Access Control (RBAC)**: Fine-grained permission management
+- **Four Built-in Roles**: System Admin, Operations Manager, External Technician, Employee
+- **Custom Permissions**: Define granular permissions per role
+- **Password Policies**: Must-change-password enforcement for new users
+- **Token Invalidation**: Instant token invalidation for password resets
+
+## Architecture
+
+Quorum follows a modern layered architecture with clear separation of concerns:
+
+```
+┌─────────────────────────────────────┐
+│      Frontend (Angular/Ionic)       │
+│      Web & Mobile Clients           │
+└────────────────┬────────────────────┘
+                 │ REST API (JWT Auth)
+┌────────────────▼────────────────────┐
+│  Django REST API Backend            │
+│  ├─ Authentication & Authorization  │
+│  ├─ Asset Management                │
+│  ├─ Maintenance Workflow            │
+│  ├─ Notifications & Real-time       │
+│  ├─ AI/LLM Integration              │
+│  └─ Audit & Compliance              │
+└────────────────┬────────────────────┘
+                 │
+        ┌────────┼────────┐
+        │        │        │
+   ┌────▼───┐ ┌──▼──┐ ┌──▼──┐
+   │PostgreSQL Redis Firebase
+   │        │        │
+   └────────┴────────┴──────┘
 ```
 
-### 2. Create Virtual Environment
+## Tech Stack
+
+### Backend
+- **Framework**: Django 6.0.4 with Django REST Framework 3.17.1
+- **Language**: Python 3.10+
+- **Database**: PostgreSQL (with SQLite support for development)
+- **Authentication**: JWT (djangorestframework_simplejwt 5.5.1)
+- **Real-time**: Django Channels 4.x with Redis
+- **Web Server**: Gunicorn 26.2.0
+- **Static Files**: WhiteNoise 6.12.0
+- **Notifications**: Firebase Admin SDK 7.4.0 (optional)
+
+### Frontend
+- **Framework**: Angular 20.3.25
+- **Mobile**: Ionic 8.0.0 + Capacitor 8.4.2 (iOS/Android)
+- **Styling**: Tailwind CSS 3.4.17
+- **State Management**: RxJS 7.8.0
+- **Testing**: Karma/Jasmine
+
+### Infrastructure
+- **Container**: Docker compatible
+- **Deployment**: Heroku, Railway, AWS, Kubernetes, Traditional Servers
+- **Storage**: Media files support with WhiteNoise
+- **Caching**: Redis for Channels and caching
+
+## Getting Started
+
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+- Python 3.10 or higher
+- PostgreSQL 12 or higher (or use SQLite for development)
+- pip (Python package manager)
+- Virtual environment tool (venv or similar)
+- Git
+- (Optional) Docker for containerization
+
+### Installation
+
+1. **Clone the repository**:
 ```bash
+git clone https://github.com/yourusername/quorum.git
+cd quorum/quorum-backend
+```
+
+2. **Create and activate a virtual environment**:
+```bash
+# On Windows
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+venv\Scripts\activate
+
+# On macOS/Linux
+python3 -m venv venv
+source venv/bin/activate
 ```
 
-### 3. Install Dependencies
+3. **Install dependencies**:
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Configure Environment Variables
+### Configuration
+
+1. **Copy the environment template**:
 ```bash
 cp .env.example .env
-# Edit .env with your configuration
 ```
 
-**Required environment variables:**
-```
-DEBUG=False
-SECRET_KEY=your-django-secret-key-here
-DATABASE_URL=postgresql://user:password@localhost:5432/quorum
-GROQ_API_KEY=sk-your-groq-api-key
-OPENROUTER_API_KEY=sk-your-openrouter-api-key
-FIREBASE_CREDENTIALS_PATH=/path/to/service-account.json  # Optional
+2. **Configure your `.env` file** with appropriate values:
+
+```bash
+# Django Configuration
+DEBUG=True
+SECRET_KEY=your-secret-key-here-change-in-production
+
+# Database Configuration
+# For PostgreSQL:
+DATABASE_URL=postgresql://user:password@localhost:5432/quorum_db
+
+# For SQLite (development):
+DATABASE_URL=sqlite:///db.sqlite3
+
+# LLM/AI Services
+GROQ_API_KEY=your-groq-api-key
+OPENROUTER_API_KEY=your-openrouter-api-key
+
+# Firebase (optional, for push notifications)
+FIREBASE_CREDENTIALS_PATH=/path/to/service-account.json
 ```
 
-### 5. Database Setup
+3. **Run migrations**:
 ```bash
 python manage.py migrate
+```
+
+4. **Create a superuser account**:
+```bash
 python manage.py createsuperuser
 ```
 
-### 6. Collect Static Files
-```bash
-python manage.py collectstatic --noinput
-```
+### Running the Backend
 
-## 🚀 Running the Server
-
-### Development
+**Development Server**:
 ```bash
 python manage.py runserver
 ```
 
-### Production
-```bash
-gunicorn config.wsgi:application
+The API will be available at `http://localhost:8000`
+
+**For production deployment**, see the [Deployment](#deployment) section.
+
+## Project Structure
+
+```
+quorum-backend/
+├── apps/                          # Django applications
+│   ├── ai/                       # AI/LLM integration
+│   ├── assets/                   # Asset management
+│   ├── audit/                    # Audit logging
+│   ├── authentication/           # Auth endpoints
+│   ├── dashboard/                # Dashboard metrics
+│   ├── users/                    # User management
+│   ├── maintenance/              # Maintenance requests
+│   ├── depreciation/             # Depreciation calculations
+│   ├── notifications/            # Real-time notifications
+│   ├── purchases/                # Purchase tracking
+│   ├── reports/                  # Reporting features
+│   ├── company_settings/         # Organization settings
+│   └── common/                   # Shared utilities
+├── config/                        # Django configuration
+│   ├── settings.py               # Main settings
+│   ├── urls.py                   # URL routing
+│   ├── wsgi.py                   # WSGI entry point
+│   └── asgi.py                   # ASGI entry point (Channels)
+├── manage.py                      # Django management utility
+├── requirements.txt               # Python dependencies
+├── .env.example                   # Environment template
+├── Procfile                       # Deployment configuration
+├── DEPLOYMENT_GUIDE.md            # Deployment instructions
+├── SECURITY.md                    # Security documentation
+└── README.md                      # This file
 ```
 
-The API will be available at `http://localhost:8000/api`
-
-## 📚 API Documentation
+## API Documentation
 
 ### Authentication
-All endpoints require JWT token authentication (except login):
+All API endpoints require JWT authentication. Include the token in the Authorization header:
+
 ```bash
-Authorization: Bearer <your_jwt_token>
+Authorization: Bearer <your-jwt-token>
 ```
 
-### Key Endpoints
+### Base URL
+```
+http://localhost:8000/api/
+```
+
+### Main Endpoints
 
 #### Authentication
-- `POST /api/auth/login/` - User login
-- `POST /api/auth/logout/` - User logout
-- `POST /api/auth/refresh/` - Refresh JWT token
+- `POST /auth/login/` - User login
+- `POST /auth/refresh/` - Refresh JWT token
+- `POST /auth/logout/` - User logout
 
 #### Assets
-- `GET /api/assets/` - List all assets
-- `POST /api/assets/` - Create asset
-- `GET /api/assets/{id}/` - Get asset details
-- `PUT /api/assets/{id}/` - Update asset
-- `DELETE /api/assets/{id}/` - Delete asset
-- `POST /api/assets/{id}/assign/` - Assign asset to user
+- `GET /assets/` - List all assets
+- `POST /assets/` - Create new asset
+- `GET /assets/{id}/` - Get asset details
+- `PUT /assets/{id}/` - Update asset
+- `DELETE /assets/{id}/` - Delete asset
+- `GET /assets/{id}/units/` - Get asset units
 
 #### Asset Assignments
-- `GET /api/assignments/` - List assignments
-- `POST /api/assignments/` - Create assignment
-- `PUT /api/assignments/{id}/` - Update assignment
-- `DELETE /api/assignments/{id}/` - Remove assignment
-
-#### Purchases
-- `GET /api/purchases/` - List purchases
-- `POST /api/purchases/` - Create purchase
-- `GET /api/purchases/{id}/` - Get purchase details
-- `POST /api/purchases/{id}/payments/` - Record payment
+- `GET /assignments/` - List assignments
+- `POST /assignments/` - Create assignment
+- `PUT /assignments/{id}/` - Update assignment
+- `POST /assignments/{id}/return/` - Return asset
 
 #### Maintenance
-- `GET /api/maintenance/` - List maintenance requests
-- `POST /api/maintenance/` - Create maintenance request
-- `PUT /api/maintenance/{id}/` - Update maintenance status
-- `POST /api/maintenance/{id}/updates/` - Add work update
+- `GET /maintenance/` - List maintenance requests
+- `POST /maintenance/` - Create request
+- `PUT /maintenance/{id}/` - Update request
+- `PUT /maintenance/{id}/status/` - Update status
 
 #### Users
-- `GET /api/users/` - List users
-- `POST /api/users/` - Create user
-- `GET /api/users/{id}/` - Get user details
-- `PUT /api/users/{id}/` - Update user
+- `GET /users/` - List users (admin only)
+- `POST /users/` - Create user (admin only)
+- `GET /users/profile/` - Get current user profile
+- `PUT /users/{id}/` - Update user
 
-#### Audit Logs
-- `GET /api/audit-logs/` - View activity logs
+#### Notifications
+- `GET /notifications/` - Get user notifications
+- `GET /notifications/unread-count/` - Get unread count
+- `PUT /notifications/{id}/` - Mark as read
+
+#### Dashboard
+- `GET /dashboard/` - Get dashboard metrics
+- `GET /dashboard/summary/` - Get quick summary
 
 #### Depreciation
-- `GET /api/depreciation/` - View depreciation schedules
+- `GET /depreciation/` - Get depreciation data
+- `GET /depreciation/calculate/` - Calculate depreciation
 
-### Pagination
-All list endpoints support pagination with `limit` and `offset` parameters:
+For complete API documentation, please refer to the API specification or Swagger documentation (if enabled).
+
+## Core Modules
+
+### 1. Asset Management (`apps/assets`)
+Handles complete asset lifecycle including creation, tracking, assignment, and retirement.
+
+**Key Models:**
+- `Asset` - Main asset records with financial data
+- `AssetCategory` - Asset categorization
+- `AssetUnit` - Individual units with serial numbers
+- `AssetAssignmentHistory` - Complete assignment audit trail
+- `AssetRequest` - Employee asset requests
+
+### 2. User Management (`apps/users`, `apps/authentication`)
+Manages user accounts, roles, permissions, and authentication.
+
+**Key Features:**
+- Custom user model with role-based system
+- Four built-in roles with customizable permissions
+- Department and employee ID tracking
+- Mandatory password change on first login
+
+### 3. Maintenance Management (`apps/maintenance`)
+Tracks maintenance requests from creation to completion.
+
+**Key Models:**
+- `MaintenanceRequest` - Maintenance ticket tracking
+- `MaintenanceTimelineEntry` - Historical status changes
+
+**Statuses:** Pending → ToDo → In Progress → Review → Completed → Verified
+
+### 4. Notifications (`apps/notifications`)
+Real-time notification system with Firebase integration.
+
+**Key Features:**
+- In-app and push notifications
+- User preference management
+- FCM device token tracking
+- Multiple notification types
+
+### 5. Audit & Compliance (`apps/audit`)
+Complete audit trail for compliance and financial reporting.
+
+**Tracked Actions:**
+- Create, Edit, Delete operations
+- Asset assignments and transfers
+- Return and retirement events
+
+### 6. Depreciation (`apps/depreciation`)
+Automatic asset depreciation calculation and tracking.
+
+**Features:**
+- Straight-line depreciation
+- Salvage value tracking
+- Useful life configuration
+
+### 7. AI Assistance (`apps/ai`)
+AI-powered features using Groq and OpenRouter APIs.
+
+**Capabilities:**
+- Issue description generation
+- Asset categorization assistance
+- Conversational AI assistant
+
+## Authentication & Authorization
+
+### Roles & Permissions
+
+**System Admin**
+- Full system access
+- User management
+- Configuration management
+- All asset and maintenance operations
+
+**Operations Manager**
+- Asset management and assignment
+- Maintenance workflow management
+- Report generation
+- User management (limited)
+
+**External Technician**
+- Maintenance request management
+- Technician assignment handling
+- Status updates
+- Limited view access
+
+**Employee**
+- View assigned assets
+- Request maintenance
+- View notifications
+- View own profile
+
+### Permission Model
+```python
+Permission format: '<resource>.<action>'
+Examples: 'asset.view', 'asset.create', 'asset.edit', 'maintenance.manage'
 ```
-GET /api/assets/?limit=20&offset=0
+
+## Environment Variables
+
+### Required Variables
+
+```bash
+# Django Core
+DEBUG=False
+SECRET_KEY=<generate-unique-secret-key>
+
+# Database
+DATABASE_URL=postgresql://<user>:<password>@<host>:<port>/<dbname>?sslmode=require
+
+# LLM Services
+GROQ_API_KEY=<your-groq-api-key>
+OPENROUTER_API_KEY=<your-openrouter-api-key>
+
+# Firebase (Optional)
+FIREBASE_CREDENTIALS_PATH=/path/to/service-account.json
 ```
 
-### Filtering & Search
-Most list endpoints support filtering:
+### Development-Only Variables
+
+```bash
+# Local development
+DEBUG=True
+DATABASE_URL=sqlite:///db.sqlite3
+SECRET_KEY=dev-secret-key-only-for-testing
 ```
-GET /api/assets/?category=Electronics&status=Active
-GET /api/users/?department=IT
+
+For more details, see [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md).
+
+## Deployment
+
+### Supported Platforms
+
+- **Traditional Servers**: VPS, Dedicated Hosting
+- **PaaS**: Heroku, Railway, Render
+- **Containers**: Docker, Kubernetes
+- **Serverless**: AWS Lambda, Google Cloud Functions (with setup)
+- **Cloud Platforms**: AWS, Google Cloud, Azure
+
+### Quick Deployment
+
+1. **Docker**:
+```bash
+docker build -t quorum-backend .
+docker run -p 8000:8000 --env-file .env quorum-backend
 ```
 
-## 🔐 Security
+2. **Heroku**:
+```bash
+heroku create your-app-name
+git push heroku main
+heroku run python manage.py migrate
+heroku run python manage.py createsuperuser
+```
 
-- All credentials are managed via environment variables (no hardcoded secrets)
-- Firebase credentials are optional - notifications work without them
-- CORS properly configured for frontend domain
-- Rate limiting on authentication endpoints
-- SQL injection protection via Django ORM
-- CSRF protection on forms
-- Password hashing with PBKDF2
-- JWT token expiration and refresh
+3. **Railway**:
+```bash
+railway up
+```
 
-**Important**: Before deploying to production:
-1. Generate a new Django SECRET_KEY
-2. Set DEBUG=False
-3. Configure allowed hosts
-4. Set up HTTPS
-5. Rotate API keys if previously exposed
+For comprehensive deployment instructions, see [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md).
 
-See `SECURITY.md` for detailed security guidelines.
+## Security
 
-## 📦 Architecture
+### Security Features
 
-### Django Apps
-- **authentication**: User authentication and JWT tokens
-- **users**: User management and profiles
-- **assets**: Asset inventory and assignment
-- **purchases**: Purchase orders and payments
-- **maintenance**: Maintenance requests and tracking
-- **depreciation**: Asset depreciation calculations
-- **notifications**: Push notifications and preferences
-- **audit**: Activity logging and audit trails
-- **ai**: AI assistant integration
-- **common**: Shared utilities and helpers
+✅ **JWT Authentication**: Stateless, token-based authentication
+✅ **RBAC**: Role-based access control with granular permissions
+✅ **Environment Variables**: No hardcoded secrets
+✅ **CORS Protection**: Configurable allowed origins
+✅ **CSRF Protection**: Django's built-in CSRF middleware
+✅ **Password Hashing**: Django's secure password validators
+✅ **HTTPS Enforcement**: TLS/SSL in production
+✅ **Audit Logging**: Complete audit trail for compliance
 
-### Database Models
-- User, Department, Location
-- Asset, AssetCategory, AssetUnit, AssetAssignmentHistory
-- Purchase, Payment, Supplier
-- MaintenanceRequest, MaintenanceUpdate
-- Notification, UserNotificationPreference, FCMDevice
-- AuditLog, DepreciationSchedule
+### Before Deploying to Production
 
-### External Integrations
-- **Firebase Admin SDK**: Push notifications
-- **Groq API**: AI-powered insights
-- **OpenRouter API**: Alternative AI provider
+- [ ] Generate new `SECRET_KEY`
+- [ ] Set `DEBUG=False`
+- [ ] Configure `ALLOWED_HOSTS` with your domain
+- [ ] Set up PostgreSQL with SSL
+- [ ] Configure CORS `ALLOWED_ORIGINS` (restrict from `*`)
+- [ ] Enable HTTPS/SSL certificates
+- [ ] Run security checks: `python manage.py check --deploy`
+- [ ] Set up monitoring and logging
+- [ ] Review SECURITY.md documentation
 
-## 🧪 Testing
+For detailed security information, see [SECURITY.md](./SECURITY.md).
+
+## Testing
+
+### Run Backend Tests
 
 ```bash
 # Run all tests
@@ -229,131 +530,71 @@ python manage.py test
 # Run specific app tests
 python manage.py test apps.assets
 
-# With coverage report
+# Run specific test class
+python manage.py test apps.assets.tests.AssetTestCase
+
+# Run with coverage
+pip install coverage
 coverage run --source='.' manage.py test
 coverage report
 ```
 
-## 📝 Environment Variables Reference
+### Test Structure
+Each app includes a `tests.py` file with unit and integration tests.
 
-See `.env.example` for complete list. Key variables:
-
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `SECRET_KEY` | Django secret key for cryptography | Yes |
-| `DEBUG` | Debug mode (False for production) | Yes |
-| `DATABASE_URL` | PostgreSQL connection string | Yes |
-| `GROQ_API_KEY` | Groq API key for AI features | No |
-| `OPENROUTER_API_KEY` | OpenRouter API key for AI | No |
-| `FIREBASE_CREDENTIALS_PATH` | Path to Firebase service account JSON | No |
-
-## 🚀 Deployment
-
-### Using Gunicorn + Nginx
+### Frontend Testing (Angular)
 
 ```bash
-# Install Gunicorn
-pip install gunicorn
+# Navigate to frontend directory
+cd ../quorum-frontend
 
-# Run with Gunicorn
-gunicorn --workers 4 --bind 0.0.0.0:8000 config.wsgi:application
+# Run tests
+npm test
+
+# Run with coverage
+npm test -- --code-coverage
 ```
 
-### Using Docker
-```bash
-docker build -t quorum-backend .
-docker run -p 8000:8000 --env-file .env quorum-backend
-```
+## Contributing
 
-### Environment-Specific Deployment
-- **Development**: `DEBUG=True`, SQLite or local PostgreSQL
-- **Staging**: `DEBUG=False`, Staging database, Test API keys
-- **Production**: `DEBUG=False`, Production database, Production credentials, HTTPS only
+Contributions are welcome! Please follow these guidelines:
 
-## 📊 Database Schema
+1. **Fork the repository** and create a feature branch
+2. **Follow code style**: PEP 8 for Python, Angular style guide for TypeScript
+3. **Write tests** for new features
+4. **Document changes** in commit messages
+5. **Submit a Pull Request** with a clear description
 
-### Key Relationships
-- User → Department (many-to-one)
-- Asset → Category (many-to-one)
-- Asset → AssetUnit (one-to-many)
-- AssetUnit → User (assignment history)
-- Purchase → Supplier (many-to-one)
-- MaintenanceRequest → Asset (many-to-one)
+## Troubleshooting
 
-## 🔄 API Response Format
+### Common Issues
 
-### Success Response
-```json
-{
-  "data": { ... },
-  "message": "Operation successful",
-  "status": 200
-}
-```
+**Issue**: Database connection error
+- **Solution**: Verify `DATABASE_URL` is correct and database server is running
 
-### Error Response
-```json
-{
-  "error": "Error message",
-  "details": { ... },
-  "status": 400
-}
-```
+**Issue**: `SECRET_KEY` not set
+- **Solution**: Generate and set `SECRET_KEY` in .env file: `python -c "from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())"`
 
-## 🆘 Troubleshooting
+**Issue**: Permission denied on migrations
+- **Solution**: Ensure database user has necessary privileges
 
-### Database Connection Issues
-```bash
-# Check DATABASE_URL format
-# Should be: postgresql://user:password@localhost:5432/dbname
-```
+**Issue**: Firebase notifications not working
+- **Solution**: Verify `FIREBASE_CREDENTIALS_PATH` is set and file exists (optional feature)
 
-### Firebase Not Available
-```bash
-# Firebase is optional. App works without it.
-# To disable: leave FIREBASE_CREDENTIALS_PATH unset
-```
+**Issue**: CORS errors in frontend
+- **Solution**: Add frontend URL to `CORS_ALLOWED_ORIGINS` in settings.py
 
-### AI Features Not Working
-```bash
-# Ensure GROQ_API_KEY or OPENROUTER_API_KEY is set
-# Check API quota and rate limits
-```
+## License
 
-### Permission Denied Errors
-```bash
-# Check user role and permissions
-# Verify JWT token is valid
-# Check CORS configuration
-```
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 📚 Documentation
+## Support
 
-- [Security Guidelines](./SECURITY.md)
-- [Deployment Guide](./DEPLOYMENT_GUIDE.md)
-- [Security Audit Report](./SECURITY_AUDIT_REPORT.md)
-
-## 🤝 Contributing
-
-1. Create a feature branch from `main`
-2. Make your changes
-3. Write tests for new features
-4. Ensure all tests pass
-5. Create a pull request
-
-## 📄 License
-
-This project is proprietary software. All rights reserved.
-
-## 👨‍💻 Author
-
-Umair Zafar - [GitHub](https://github.com/umairlabs)
-
-## 📧 Support
-
-For issues, questions, or feedback, please create an issue on GitHub.
+For issues, questions, or contributions:
+- 📧 Email: [support email]
+- 🐛 Issues: [GitHub Issues Link]
+- 💬 Discussions: [GitHub Discussions Link]
 
 ---
 
-**Version**: 1.0.0  
-**Last Updated**: November 2026
+**Quorum Asset Management System** - Simplifying enterprise asset management with intelligent tracking, maintenance workflows, and complete audit compliance.
