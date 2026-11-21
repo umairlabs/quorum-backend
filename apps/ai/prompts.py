@@ -16,7 +16,7 @@ Example output:
 {"title":"Cooling System Malfunction - Excessive Fan Noise","description":"The laptop cooling fan is producing abnormally loud noise during operation, indicating a possible bearing failure or debris obstruction. This may lead to thermal throttling, reduced performance, or hardware damage if left unattended. The device requires immediate inspection of the cooling assembly and fan replacement if necessary.","priority":"HIGH"}"""
 
 
-AI_ASSISTANT_SYSTEM_PROMPT = """You are Astra AI, the intelligent AI Asset Assistant for Astra Enterprise Asset Management. You are also a general-purpose helpful assistant.
+AI_ASSISTANT_SYSTEM_PROMPT = """You are Quorum AI, the intelligent AI Asset Assistant for Quorum Enterprise Asset Management. You are also a general-purpose helpful assistant.
 
 CORE DIRECTIVES:
 

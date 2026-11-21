@@ -7,7 +7,7 @@ An intelligent, enterprise-grade asset management platform designed to help orga
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791?style=flat-square&logo=postgresql)
 ![Angular](https://img.shields.io/badge/Angular-20.3.25-DD0031?style=flat-square&logo=angular)
 ![Ionic](https://img.shields.io/badge/Ionic-8.0.0-3880FF?style=flat-square&logo=ionic)
-![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
+
 
 ## Table of Contents
 
@@ -28,7 +28,6 @@ An intelligent, enterprise-grade asset management platform designed to help orga
 - [Security](#security)
 - [Testing](#testing)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Features
 
@@ -167,7 +166,7 @@ Before you begin, ensure you have the following installed:
 
 1. **Clone the repository**:
 ```bash
-git clone https://github.com/yourusername/quorum.git
+git clone https://github.com/umairlabs/quorum.git
 cd quorum/quorum-backend
 ```
 
@@ -583,10 +582,6 @@ Contributions are welcome! Please follow these guidelines:
 
 **Issue**: CORS errors in frontend
 - **Solution**: Add frontend URL to `CORS_ALLOWED_ORIGINS` in settings.py
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Support
 

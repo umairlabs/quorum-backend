@@ -115,7 +115,7 @@ def _call_groq(prompt: str, api_key: str) -> dict:
             "Content-Type": "application/json",
             "Authorization": f"Bearer {api_key}",
             "HTTP-Referer": "http://localhost:8100",
-            "X-Title": "Astra Asset Management",
+            "X-Title": "Quorum Asset Management",
         },
         method="POST",
     )
@@ -439,7 +439,7 @@ def _call_openrouter_assistant(message: str, history: list, db_context: dict, ap
                 "Content-Type": "application/json",
                 "Authorization": f"Bearer {api_key}",
                 "HTTP-Referer": "http://localhost:8000",
-                "X-Title": "Astra Asset Management",
+                "X-Title": "Quorum Asset Management",
             },
             method="POST",
         )
@@ -489,7 +489,7 @@ def _call_groq_assistant(message: str, history: list, db_context: dict, api_key:
             "Content-Type": "application/json",
             "Authorization": f"Bearer {api_key}",
             "HTTP-Referer": "http://localhost:8100",
-            "X-Title": "Astra Asset Management",
+            "X-Title": "Quorum Asset Management",
         },
         method="POST",
     )
@@ -1381,7 +1381,7 @@ def _fallback_smart_assistant(user, message: str, db_context: dict) -> dict:
 
     # Default fallback message
     return {
-        "message": "Hello! I am **Astra AI**, your intelligent Enterprise Asset Management Assistant.\n\nAsk me about your assets, physical units, assignments, maintenance tickets, purchases, and requests, or ask me to perform actions using natural language.\n\nHow can I help you today?",
+        "message": "Hello! I am **Quorum AI**, your intelligent Enterprise Asset Management Assistant.\n\nAsk me about your assets, physical units, assignments, maintenance tickets, purchases, and requests, or ask me to perform actions using natural language.\n\nHow can I help you today?",
         "intent": "GENERAL",
         "action": None
     }
