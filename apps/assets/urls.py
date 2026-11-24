@@ -16,6 +16,7 @@ from .views import (
     AssetRequestAssignUnitView,
     ConfirmReceiptView,
     MyAssignedAssetsView,
+    PopulateSampleDataView,
 )
 
 app_name = 'assets'
@@ -33,6 +34,9 @@ urlpatterns = [
     
     path('confirm-receipt/', ConfirmReceiptView.as_view(), name='confirm-receipt'),
     path('my-assigned/', MyAssignedAssetsView.as_view(), name='my-assigned-assets'),
+
+    # One-time setup endpoint
+    path('populate-sample-data/', PopulateSampleDataView.as_view(), name='populate-sample-data'),
 
     # search must come before <uuid:pk> to avoid being caught by the detail route
     path('search/', AssetSearchView.as_view(), name='asset-search'),

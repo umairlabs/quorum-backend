@@ -613,3 +613,34 @@ class MyAssignedAssetsView(APIView):
             assignment.unit.save(update_fields=['status', 'assigned_to'])
 
         return Response({'detail': 'Assignment removed from your list.'}, status=status.HTTP_200_OK)
+
+
+
+# ---------------------------------------------------------------------------
+# One-time Database Setup (for demo/testing)
+# ---------------------------------------------------------------------------
+
+class PopulateSampleDataView(APIView):
+    """
+    One-time endpoint to populate the database with sample data.
+    Only accessible to system admins.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        # Check if user is system admin
+        if not request.user.is_superuser and request.user.role != 'system_admin':
+            return Response(
+                {'error': 'Only system administrators can populate sample data'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        try:
+            from apps.assets.management.commands.populate_via_api import populate_database
+            results = populate_database()
+            return Response(results, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return Response(
+                {'error': str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
