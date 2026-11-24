@@ -55,8 +55,9 @@ class DashboardService:
 
     @staticmethod
     def get_summary_stats():
-        total_assets = Asset.objects.count()
+        # Count only PURCHASED asset units (physical items), not catalog templates
         total_units = AssetUnit.objects.count()
+        total_asset_templates = Asset.objects.count()  # Just for reference, not shown in dashboard
 
         unit_mnt_count = AssetUnit.objects.filter(status=AssetUnit.Status.MAINTENANCE).count()
         maintenance_count = unit_mnt_count
@@ -70,12 +71,9 @@ class DashboardService:
         scrapped_count = AssetUnit.objects.filter(status=AssetUnit.Status.SCRAPPED).count()
         available_units_count = AssetUnit.objects.filter(status=AssetUnit.Status.AVAILABLE).count()
 
+        # Dashboard shows ONLY purchased units, not templates
+        total_count = total_units
         available_count = available_units_count
-        if total_units > 0:
-            total_count = total_units
-        else:
-            total_count = total_assets
-            available_count = total_assets
 
         cost_agg = Asset.objects.aggregate(
             purchase=Sum('purchase_cost'),
@@ -98,8 +96,8 @@ class DashboardService:
             pass
 
         return {
-            'totalAssets': total_count,
-            'totalAssetModels': total_assets,
+            'totalAssets': total_count,  # Total PURCHASED units (not templates)
+            'totalAssetModels': total_asset_templates,  # Number of catalog templates
             'assignedCount': assigned_count,
             'activeAssignments': active_assignments,
             'availableCount': available_count,
